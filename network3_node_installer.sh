@@ -17,9 +17,27 @@ tar -xvf ubuntu-node-v2.1.1.tar.gz
 rm -rf ubuntu-node-v2.1.1.tar.gz
 cd ubuntu-node
 
-# Создаем Screen сессию ноды
-screen -S network3 
-sudo bash manager.sh up
+# Настраиваем автозапуск ноды после перезагрузки
+cat <<EOL | sudo tee /etc/systemd/system/network3-node.service
+[Unit]
+Description=Network 3 Node Service
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/bin/bash -c 'cd /root/ubuntu-node && sudo bash manager.sh up'
+Restart=always
+User=root
+
+[Install]
+WantedBy=multi-user.target
+EOL
+
+# Перезапускаем демоны systemd и включаем службу
+sudo systemctl daemon-reload
+sudo systemctl enable network3-node.service
+sudo systemctl start network3-node.service
 
 # Выводим API KEY в консоль
 sudo bash manager.sh key
+
