@@ -1,0 +1,8 @@
+# Название Google таблицы
+GOOGLE_SHEET_NAME=Table name
+
+# Название листа в таблице
+GOOGLE_WORKSHEET_NAME=Sheet name
+
+# Путь к JSON файлу с ключами для авторизации в Google API
+GOOGLE_CREDENTIALS_FILE=credentials.json
