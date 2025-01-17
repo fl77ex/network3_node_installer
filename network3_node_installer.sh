@@ -38,6 +38,25 @@ sudo systemctl daemon-reload
 sudo systemctl enable network3-node.service
 sudo systemctl start network3-node.service
 
-# Выводим API KEY в консоль
-sudo bash manager.sh key
+# Функция для получения API Key
+function get_api_key {
+  while true; do
+    output=$(sudo bash manager.sh key)
+    echo "$output"
+
+    # Извлекаем последнюю строку
+    last_line=$(echo "$output" | tail -n 1)
+
+    if [[ "$last_line" != "System architecture is x86_64 (64-bit)" ]]; then
+      echo "API Key успешно получен!"
+      break
+    else
+      echo "Не удалось получить API Key. Повтор через 5 секунд..."
+      sleep 5
+    fi
+  done
+}
+
+# Запрашиваем API Key
+get_api_key
 
